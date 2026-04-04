@@ -5,7 +5,7 @@ remove_unwanted_packages() {
         "luci-app-passwall" "luci-app-ddns-go" "luci-app-rclone" "luci-app-ssr-plus"
         "luci-app-vssr" "luci-app-daed" "luci-app-dae" "luci-app-alist" "luci-app-homeproxy"
         "luci-app-haproxy-tcp" "luci-app-openclash" "luci-app-mihomo" "luci-app-appfilter"
-        "luci-app-msd_lite" "luci-app-unblockneteasemusic" "luci-app-adguardhome"
+        "luci-app-msd_lite" "luci-app-unblockneteasemusic"
     )
     local packages_net=(
         "haproxy" "xray-core" "xray-plugin" "dns2socks" "alist" "hysteria"
@@ -18,7 +18,7 @@ remove_unwanted_packages() {
         "cups"
     )
     local small8_packages=(
-        "ppp" "firewall" "dae" "daed" "daed-next" "libnftnl" "nftables" "dnsmasq" "luci-app-alist"
+        "ppp" "firewall4" "dae" "daed" "daed-next" "libnftnl" "nftables" "dnsmasq" "luci-app-alist"
         "alist" "opkg" "smartdns" "luci-app-smartdns" "easytier"
     )
 
@@ -71,24 +71,20 @@ update_golang() {
 
 install_small8() {
     ./scripts/feeds install -p small8 -f xray-core xray-plugin dns2tcp dns2socks haproxy hysteria \
-        naiveproxy shadowsocks-rust sing-box v2ray-core v2ray-geodata geoview v2ray-plugin \
-        tuic-client chinadns-ng ipt2socks tcping trojan-plus simple-obfs shadowsocksr-libev \
-        v2dat mosdns luci-app-mosdns adguardhome luci-app-adguardhome ddns-go \
-        luci-app-ddns-go taskd luci-lib-xterm luci-lib-taskd luci-app-store quickstart \
-        luci-app-quickstart luci-app-istorex luci-app-cloudflarespeedtest netdata luci-app-netdata \
-        lucky luci-app-lucky luci-app-openclash luci-app-homeproxy luci-app-amlogic \
-        tailscale luci-app-tailscale oaf open-app-filter luci-app-oaf easytier luci-app-easytier \
-        msd_lite luci-app-msd_lite cups luci-app-cupsd
+    naiveproxy shadowsocks-rust sing-box v2ray-core v2ray-geodata geoview v2ray-plugin \
+    tuic-client chinadns-ng ipt2socks tcping trojan-plus simple-obfs shadowsocksr-libev \
+    v2dat mosdns luci-app-mosdns adguardhome luci-app-adguardhome ddns-go \
+    luci-app-ddns-go taskd luci-lib-xterm luci-lib-taskd luci-app-store quickstart \
+    luci-app-quickstart luci-app-istorex luci-app-cloudflarespeedtest netdata luci-app-netdata \
+    lucky luci-app-lucky luci-app-openclash luci-app-homeproxy luci-app-amlogic nikki luci-app-nikki \
+    tailscale luci-app-tailscale oaf open-app-filter luci-app-oaf easytier luci-app-easytier \
+    msd_lite luci-app-msd_lite cups luci-app-cupsd luci-app-fstab luci-app-uhttpd \
+    libip4tc libip6tc kmod-nf-conntrack kmod-ipt-fullconenat
 }
 
 install_passwall() {
     echo "正在从官方仓库安装 luci-app-passwall..."
     ./scripts/feeds install -p passwall -f luci-app-passwall
-}
-
-install_nikki() {
-    echo "正在从官方仓库安装 nikki..."
-    ./scripts/feeds install -p nikki -f nikki luci-app-nikki
 }
 
 install_fullconenat() {
@@ -514,7 +510,13 @@ update_package() {
     fi
 }
 
-install_openlist() {
-    echo "正在安装 luci-app-openlist..."
-    ./scripts/feeds install -p openlist -f luci-app-openlist openlist
+add_openlist2() {
+    local openlist2_dir="$BUILD_DIR/package/emortal/luci-app-openlist2"
+    local repo_url="https://github.com/sbwml/luci-app-openlist2.git"
+    rm -rf "$openlist2_dir" 2>/dev/null
+    echo "正在添加 luci-app-openlist2..."
+    if ! git clone --depth 1 "$repo_url" "$openlist2_dir"; then
+        echo "错误：从 $repo_url 克隆 luci-app-openlist2 仓库失败" >&2
+        exit 1
+    fi
 }
