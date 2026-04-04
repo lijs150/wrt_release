@@ -24,7 +24,7 @@ FEEDS_CONF="feeds.conf.default"
 GOLANG_REPO="https://github.com/sbwml/packages_lang_golang"
 GOLANG_BRANCH="26.x"
 THEME_SET="argon"
-LAN_ADDR="192.168.1.1"
+LAN_ADDR="192.168.10.1"
 
 SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 BASE_PATH=${BASE_PATH:-$SCRIPT_DIR}
@@ -72,8 +72,8 @@ main() {
     fix_quickstart
     update_oaf_deconfig
     add_timecontrol
-    add_quickfile
     update_lucky
+    add_openlist2
     fix_rust_compile_error
     update_smartdns
     update_diskman
