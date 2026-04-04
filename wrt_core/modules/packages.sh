@@ -19,7 +19,7 @@ remove_unwanted_packages() {
     )
     local small8_packages=(
         "ppp" "firewall4" "dae" "daed" "daed-next" "libnftnl" "nftables" "dnsmasq" "luci-app-alist"
-        "alist" "opkg" "smartdns" "luci-app-smartdns" "easytier"
+        "alist" "opkg" "smartdns" "luci-app-smartdns" "easytier" "openlist" "luci-app-openlist"
     )
 
     for pkg in "${luci_packages[@]}"; do
@@ -511,12 +511,25 @@ update_package() {
 }
 
 add_openlist2() {
-    local openlist2_dir="$BUILD_DIR/package/emortal/luci-app-openlist2"
+    local emortal_dir="$BUILD_DIR/package/emortal"
     local repo_url="https://github.com/sbwml/luci-app-openlist2.git"
-    rm -rf "$openlist2_dir" 2>/dev/null
+    local tmp_dir
+    
+    rm -rf "$emortal_dir/luci-app-openlist2" 2>/dev/null
+    
     echo "正在添加 luci-app-openlist2..."
-    if ! git clone --depth 1 "$repo_url" "$openlist2_dir"; then
+    tmp_dir=$(mktemp -d)
+    
+    if ! git clone --depth 1 "$repo_url" "$tmp_dir"; then
         echo "错误：从 $repo_url 克隆 luci-app-openlist2 仓库失败" >&2
+        rm -rf "$tmp_dir"
         exit 1
     fi
+    
+    if [ -d "$tmp_dir/luci-app-openlist2" ]; then
+        mv "$tmp_dir/luci-app-openlist2" "$emortal_dir/"
+    fi
+    
+    rm -rf "$tmp_dir"
+    echo "luci-app-openlist2 添加完成"
 }
