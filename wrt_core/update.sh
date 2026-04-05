@@ -71,7 +71,7 @@ main() {
     update_mosdns_deconfig
     fix_quickstart
     add_timecontrol
-    update_lucky
+    add_lucky
     add_oaf
     add_openlist2
     fix_rust_compile_error
