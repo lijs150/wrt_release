@@ -70,9 +70,9 @@ main() {
     add_backup_info_to_sysupgrade
     update_mosdns_deconfig
     fix_quickstart
-    update_oaf_deconfig
     add_timecontrol
     update_lucky
+    add_oaf
     add_openlist2
     fix_rust_compile_error
     update_smartdns
