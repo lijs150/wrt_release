@@ -78,7 +78,7 @@ install_small8() {
     v2dat mosdns luci-app-mosdns adguardhome luci-app-adguardhome ddns-go \
     luci-app-ddns-go taskd luci-lib-xterm luci-lib-taskd luci-app-store quickstart \
     luci-app-quickstart luci-app-istorex luci-app-cloudflarespeedtest netdata luci-app-netdata \
-    lucky luci-app-lucky luci-app-openclash luci-app-homeproxy luci-app-amlogic nikki luci-app-nikki \
+    luci-app-openclash luci-app-homeproxy luci-app-amlogic nikki luci-app-nikki \
     tailscale luci-app-tailscale easytier luci-app-easytier \
     msd_lite luci-app-msd_lite cups luci-app-cupsd luci-app-fstab luci-app-uhttpd \
     libip4tc libip6tc kmod-nf-conntrack kmod-ipt-fullconenat
@@ -575,4 +575,33 @@ add_openlist2() {
     
     rm -rf "$tmp_dir"
     echo "OpenList2 添加完成"
+}
+
+add_lucky() {
+    local emortal_dir="$BUILD_DIR/package/emortal"
+    local repo_url="https://github.com/gdy666/luci-app-lucky.git"
+    local tmp_dir
+    
+    rm -rf "$emortal_dir/lucky" 2>/dev/null
+    rm -rf "$emortal_dir/luci-app-lucky" 2>/dev/null
+    
+    echo "正在添加 Lucky..."
+    tmp_dir=$(mktemp -d)
+    
+    if ! git clone --depth 1 "$repo_url" "$tmp_dir"; then
+        echo "错误：从 $repo_url 克隆 luci-app-lucky 仓库失败" >&2
+        rm -rf "$tmp_dir"
+        exit 1
+    fi
+    
+    if [ -d "$tmp_dir/lucky" ]; then
+        mv "$tmp_dir/lucky" "$emortal_dir/"
+    fi
+    
+    if [ -d "$tmp_dir/luci-app-lucky" ]; then
+        mv "$tmp_dir/luci-app-lucky" "$emortal_dir/"
+    fi
+    
+    rm -rf "$tmp_dir"
+    echo "Lucky 添加完成"
 }
