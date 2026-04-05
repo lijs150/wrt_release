@@ -517,6 +517,8 @@ add_oaf() {
     local repo_url="https://github.com/destan19/OpenAppFilter.git"
     local tmp_dir
     
+    mkdir -p "$emortal_dir"
+    
     rm -rf "$emortal_dir/oaf" 2>/dev/null
     rm -rf "$emortal_dir/open-app-filter" 2>/dev/null
     rm -rf "$emortal_dir/luci-app-oaf" 2>/dev/null
@@ -551,6 +553,8 @@ add_openlist2() {
     local repo_url="https://github.com/sbwml/luci-app-openlist2.git"
     local tmp_dir
     
+    mkdir -p "$emortal_dir"
+    
     rm -rf "$emortal_dir/openlist" 2>/dev/null
     rm -rf "$emortal_dir/openlist2" 2>/dev/null
     rm -rf "$emortal_dir/luci-app-openlist" 2>/dev/null
@@ -581,6 +585,8 @@ add_lucky() {
     local emortal_dir="$BUILD_DIR/package/emortal"
     local repo_url="https://github.com/gdy666/luci-app-lucky.git"
     local tmp_dir
+    
+    mkdir -p "$emortal_dir"
     
     rm -rf "$emortal_dir/lucky" 2>/dev/null
     rm -rf "$emortal_dir/luci-app-lucky" 2>/dev/null
