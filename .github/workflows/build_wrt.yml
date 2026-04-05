@@ -66,9 +66,9 @@ jobs:
           path: |
             ./action_build/.ccache
             ./action_build/staging_dir
-          key: ${{ matrix.os }}-${{ hashFiles('**/repo_flag') }}-${{ env.BUILD_DATE }}
+          key: ${{ matrix.os }}-${{ hashFiles('**/repo_flag', 'wrt_core/**/*.sh', 'wrt_core/deconfig/*') }}-${{ env.BUILD_DATE }}
           restore-keys: |
-            ${{ matrix.os }}-${{ hashFiles('**/repo_flag') }}-
+            ${{ matrix.os }}-${{ hashFiles('**/repo_flag', 'wrt_core/**/*.sh', 'wrt_core/deconfig/*') }}-
 
       - name: Refresh the cache
         run: |
@@ -150,3 +150,21 @@ jobs:
         with:
           name: ${{ env.BUILD_DATE }}_${{ inputs.model }}
           path: ./firmware/*.*
+
+      - name: Send Email Notification
+        if: always()
+        uses: dawidd6/action-send-mail@v4
+        with:
+          server_address: smtp.qq.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: OpenWrt 编译${{ job.status == 'success' && '成功' || '失败' }} - ${{ inputs.model }}
+          to: ${{ secrets.EMAIL_TO }}
+          from: OpenWrt Builder
+          body: |
+            编译状态: ${{ job.status }}
+            设备型号: ${{ inputs.model }}
+            构建时间: ${{ env.BUILD_DATE }}
+            仓库地址: ${{ github.server_url }}/${{ github.repository }}
+            运行链接: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
