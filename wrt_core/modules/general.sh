@@ -29,6 +29,17 @@ clean_up() {
     if [[ -d "feeds" ]]; then
         ./scripts/feeds clean
     fi
+    
+    echo "清除包索引缓存..."
+    if [[ -d "staging_dir" ]]; then
+        find "staging_dir" -name ".packageinfo" -type f -delete 2>/dev/null || true
+        find "staging_dir" -name "packages" -type d -exec rm -rf {} + 2>/dev/null || true
+    fi
+    
+    if [[ -f "tmp/.packageinfo" ]]; then
+        \rm -f "tmp/.packageinfo"
+    fi
+    
     mkdir -p "tmp"
     echo "1" >"tmp/.build"
 }
