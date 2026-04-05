@@ -550,9 +550,11 @@ add_openlist2() {
     local repo_url="https://github.com/sbwml/luci-app-openlist2.git"
     local tmp_dir
     
+    rm -rf "$emortal_dir/openlist" 2>/dev/null
+    rm -rf "$emortal_dir/luci-app-openlist" 2>/dev/null
     rm -rf "$emortal_dir/luci-app-openlist2" 2>/dev/null
     
-    echo "正在添加 luci-app-openlist2..."
+    echo "正在添加 OpenList2..."
     tmp_dir=$(mktemp -d)
     
     if ! git clone --depth 1 "$repo_url" "$tmp_dir"; then
@@ -561,10 +563,14 @@ add_openlist2() {
         exit 1
     fi
     
+    if [ -d "$tmp_dir/openlist" ]; then
+        mv "$tmp_dir/openlist" "$emortal_dir/"
+    fi
+    
     if [ -d "$tmp_dir/luci-app-openlist2" ]; then
         mv "$tmp_dir/luci-app-openlist2" "$emortal_dir/"
     fi
     
     rm -rf "$tmp_dir"
-    echo "luci-app-openlist2 添加完成"
+    echo "OpenList2 添加完成"
 }
