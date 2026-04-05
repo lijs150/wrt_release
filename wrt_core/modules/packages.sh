@@ -4,7 +4,7 @@ remove_unwanted_packages() {
     local luci_packages=(
         "luci-app-passwall" "luci-app-ddns-go" "luci-app-rclone" "luci-app-ssr-plus"
         "luci-app-vssr" "luci-app-daed" "luci-app-dae" "luci-app-alist" "luci-app-homeproxy"
-        "luci-app-haproxy-tcp" "luci-app-openclash" "luci-app-mihomo" "luci-app-appfilter"
+        "luci-app-haproxy-tcp" "luci-app-openclash" "luci-app-mihomo"
         "luci-app-msd_lite" "luci-app-unblockneteasemusic"
     )
     local packages_net=(
@@ -20,6 +20,7 @@ remove_unwanted_packages() {
     local small8_packages=(
         "ppp" "firewall4" "dae" "daed" "daed-next" "libnftnl" "nftables" "dnsmasq" "luci-app-alist"
         "alist" "opkg" "smartdns" "luci-app-smartdns" "easytier" "openlist" "luci-app-openlist"
+        "oaf" "open-app-filter" "luci-app-oaf"
     )
 
     for pkg in "${luci_packages[@]}"; do
@@ -77,7 +78,7 @@ install_small8() {
     luci-app-ddns-go taskd luci-lib-xterm luci-lib-taskd luci-app-store quickstart \
     luci-app-quickstart luci-app-istorex luci-app-cloudflarespeedtest netdata luci-app-netdata \
     lucky luci-app-lucky luci-app-openclash luci-app-homeproxy luci-app-amlogic nikki luci-app-nikki \
-    tailscale luci-app-tailscale oaf open-app-filter luci-app-oaf easytier luci-app-easytier \
+    tailscale luci-app-tailscale easytier luci-app-easytier \
     msd_lite luci-app-msd_lite cups luci-app-cupsd luci-app-fstab luci-app-uhttpd \
     libip4tc libip6tc kmod-nf-conntrack kmod-ipt-fullconenat
 }
@@ -508,6 +509,40 @@ update_package() {
 
         echo "更新软件包 $1 到 $PKG_VER $PKG_HASH"
     fi
+}
+
+add_oaf() {
+    local emortal_dir="$BUILD_DIR/package/emortal"
+    local repo_url="https://github.com/destan19/OpenAppFilter.git"
+    local tmp_dir
+    
+    rm -rf "$emortal_dir/oaf" 2>/dev/null
+    rm -rf "$emortal_dir/open-app-filter" 2>/dev/null
+    rm -rf "$emortal_dir/luci-app-oaf" 2>/dev/null
+    
+    echo "正在添加 OpenAppFilter..."
+    tmp_dir=$(mktemp -d)
+    
+    if ! git clone --depth 1 "$repo_url" "$tmp_dir"; then
+        echo "错误：从 $repo_url 克隆 OpenAppFilter 仓库失败" >&2
+        rm -rf "$tmp_dir"
+        exit 1
+    fi
+    
+    if [ -d "$tmp_dir/oaf" ]; then
+        mv "$tmp_dir/oaf" "$emortal_dir/"
+    fi
+    
+    if [ -d "$tmp_dir/open-app-filter" ]; then
+        mv "$tmp_dir/open-app-filter" "$emortal_dir/"
+    fi
+    
+    if [ -d "$tmp_dir/luci-app-oaf" ]; then
+        mv "$tmp_dir/luci-app-oaf" "$emortal_dir/"
+    fi
+    
+    rm -rf "$tmp_dir"
+    echo "OpenAppFilter 添加完成"
 }
 
 add_openlist2() {
