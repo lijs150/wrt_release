@@ -20,6 +20,7 @@ remove_unwanted_packages() {
     local small8_packages=(
         "ppp" "firewall4" "dae" "daed" "daed-next" "libnftnl" "nftables" "dnsmasq" "luci-app-alist"
         "alist" "opkg" "smartdns" "luci-app-smartdns" "easytier" "openlist" "luci-app-openlist"
+        "openlist2" "luci-app-openlist2"
         "oaf" "open-app-filter" "luci-app-oaf"
     )
 
@@ -551,6 +552,7 @@ add_openlist2() {
     local tmp_dir
     
     rm -rf "$emortal_dir/openlist" 2>/dev/null
+    rm -rf "$emortal_dir/openlist2" 2>/dev/null
     rm -rf "$emortal_dir/luci-app-openlist" 2>/dev/null
     rm -rf "$emortal_dir/luci-app-openlist2" 2>/dev/null
     
@@ -563,8 +565,8 @@ add_openlist2() {
         exit 1
     fi
     
-    if [ -d "$tmp_dir/openlist" ]; then
-        mv "$tmp_dir/openlist" "$emortal_dir/"
+    if [ -d "$tmp_dir/openlist2" ]; then
+        mv "$tmp_dir/openlist2" "$emortal_dir/"
     fi
     
     if [ -d "$tmp_dir/luci-app-openlist2" ]; then
